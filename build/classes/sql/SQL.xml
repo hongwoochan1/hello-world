@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+	<!-- sql query 작성/기존의 DAO 역할을 수행한다.  -->
+	
+	<!-- id컬럼 == orgname변수 -->
+	<resultMap id="dtoMap" type="fileDTO">
+		<result column="idkorea" property="id" />
+	</resultMap>
+	
+	<select id="idkorea" resultMap="dtoMap">
+		select id||'korea' idkorea from fileList
+	</select>
+	
+	<select id="selectAll" resultType="fileDTO" >
+		select * from fileList
+	</select>
+	
+	<!-- id="태그이름" resultType="sql실행결과 타입(dto/String/int)" parameterType="DAO에서 "?"부분을 의미한다." -->
+	<select id="selectOne" resultType="String" parameterType="int">
+		select id from fileList where num=#{value}
+	</select>	
+
+	<select id="selectFile" resultType="String" parameterType="fileDTO">
+		select orgname from fileList where num=#{num} and id=#{id}
+	</select>	
+		
+	<select id="selectId" resultType="String" parameterType="String">
+		select orgname from fileList where id=#{value}
+	</select>	
+	
+	<select id="selectMap" resultType="String" parameterType="map" >
+		select orgname from fileList where id=#{mapId} and num=#{mapNum}
+	</select>	
+		
+	<select id="selectCount" resultType="int" >
+		select count(*) from fileList
+	</select>	
+	
+	
+	<insert id="insertFile" parameterType="fileDTO" >
+		insert into fileList values(fileList_seq.nextval, 
+									#{id},
+									#{orgname},
+									#{savename},
+									sysdate)
+	</insert>
+			
+	<update id="updateFile" parameterType="fileDTO">
+		update fileList set id=#{id}, orgname=#{orgname} where num=#{num}
+	</update>	
+		
+		
+</mapper>
+
